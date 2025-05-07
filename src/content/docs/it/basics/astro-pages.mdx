@@ -1,9 +1,8 @@
 ---
 title: Pagine
-description: Un'introduzione alle pagine Astro
+description: Un'introduzione alle pagine Astro.
 i18nReady: true
 ---
-
 import ReadMore from '~/components/ReadMore.astro';
 import Since from '~/components/Since.astro'
 
@@ -12,6 +11,7 @@ Le **pagine** sono file che risiedono nella sottodirectory `src/pages/` del tuo 
 ## File di pagina supportati
 
 Astro supporta i seguenti tipi di file nella directory `src/pages/`:
+
 - [`.astro`](#pagine-astro)
 - [`.md`](#pagine-markdownmdx)
 - `.mdx` (con [l'integrazione MDX installata](/it/guides/integrations-guide/mdx/#installation))
@@ -28,42 +28,41 @@ Un singolo file può anche generare più pagine utilizzando il [routing dinamico
 
 ### Collegamento tra le pagine
 
-Scrivi l´elemento standard HTML [`<a>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) nelle tue pagine Astro per collegarti ad altre pagine del tuo sito.
+Scrivi elementi HTML standard [`<a>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) nelle tue pagine Astro per collegarti ad altre pagine del tuo sito. Usa un **percorso URL relativo al tuo dominio principale** come link, non un percorso file relativo.
 
-Ad esempio, per collegarsi a `https://example.com/authors/sonali/` da qualsiasi altra pagina su "example.com":
+Ad esempio, per collegarsi a `https://example.com/authors/sonali/` da qualsiasi altra pagina su `example.com`:
 
 ```astro title="src/pages/index.astro"
-Ulteriori informazioni <a href="/authors/sonali/">su Sonali</a>.
+Leggi di più <a href="/authors/sonali/">su Sonali</a>.
 ```
 
 ## Pagine Astro
 
-Le pagine Astro utilizzano l'estensione del file `.astro` e supportano le stesse funzionalità di [Componenti Astro](/it/basics/astro-components/).
+Le pagine Astro utilizzano l'estensione del file `.astro` e supportano le stesse funzionalità dei [Componenti Astro](/it/basics/astro-components/).
 
 ```astro title="src/pages/index.astro"
 ---
 ---
-<html lang="en">
+<html lang="it">
   <head>
-    <title>La mia pagina</title>
+    <title>La mia Homepage</title>
   </head>
   <body>
-    <h1>Benvenuto sulla mia pagina!</h1>
+    <h1>Benvenuto nel mio sito web!</h1>
   </body>
 </html>
 ```
 
-Una pagina deve produrre un documento HTML completo. Se non incluso esplicitamente, Astro aggiungerà la dichiarazione `<!DOCTYPE html>` necessaria e il contenuto `<head>` a qualsiasi componente `.astro` situato all'interno di `src/pages/` per impostazione predefinita. Puoi disattivare questo comportamento in base al componente contrassegnandolo come pagina [parziale](#parziali-della-pagina).
+Una pagina deve produrre un documento HTML completo. Se non incluso esplicitamente, Astro aggiungerà la dichiarazione `<!DOCTYPE html>` necessaria e il contenuto `<head>` a qualsiasi componente `.astro` situato all'interno di `src/pages/` per impostazione predefinita. Puoi disattivare questo comportamento per singolo componente contrassegnandolo come pagina [parziale](#parziali-della-pagina).
 
 Per evitare di ripetere gli stessi elementi HTML su ogni pagina, puoi spostare gli elementi comuni `<head>` e `<body>` nei tuoi [componenti di layout](/it/basics/layouts/). Puoi utilizzare tutti i componenti di layout che desideri.
 
-```astro {3} /</?MySiteLayout>/
+```astro title="src/pages/index.astro" /</?MySiteLayout>/ {2}
 ---
-// src/pages/index.astro
-import MySiteLayout from '../layouts/MySiteLayout.astro';
+import MySiteLayout from "../layouts/MySiteLayout.astro";
 ---
 <MySiteLayout>
-  <p>Il contenuto della mia pagina, dentro ad un layout!</p>
+  <p>Il contenuto della mia pagina, racchiuso in un layout!</p>
 </MySiteLayout>
 ```
 
@@ -71,17 +70,19 @@ import MySiteLayout from '../layouts/MySiteLayout.astro';
 
 ## Pagine Markdown/MDX
 
-Astro tratta anche qualsiasi file Markdown (`.md`) all'interno di `src/pages/` come pagine del tuo sito web finale. Se hai [l´integrazione MDX installata](/it/guides/integrations-guide/mdx/#installation), tratta anche i file MDX (`.mdx`) allo stesso modo. Questi sono comunemente usati per pagine ricche di testo come post di blog e documentazione.
+Astro tratta anche qualsiasi file Markdown (`.md`) all'interno di `src/pages/` come pagine del tuo sito web finale. Se hai [l'integrazione MDX installata](/it/guides/integrations-guide/mdx/#installation), tratta anche i file MDX (`.mdx`) allo stesso modo. Questi sono comunemente usati per pagine ricche di testo come post di blog e documentazione.
 
-[Le raccolte di contenuti delle pagine Markdown o MDX](/it/guides/content-collections/) in `src/content/` possono essere utilizzate per [generare pagine dinamicamente](/it/guides/routing/#percorsi-dinamici).
+:::tip
+Considera la creazione di [raccolte di contenuti](/it/guides/content-collections/) invece di pagine per directory di file Markdown correlati che condividono una struttura simile, come post di blog o elementi di prodotto.
+:::
 
-I layout di pagina sono particolarmente utili per i [file Markdown](#pagine-markdownmdx). I file Markdown possono utilizzare la speciale proprietà frontmatter `layout` per specificare un [componente layout](/it/basics/layouts/) che avvolgerà il contenuto Markdown in un completo documento di pagina, `<html>...</html>`.
+I file Markdown possono utilizzare la speciale proprietà frontmatter `layout` per specificare un [componente layout](/it/basics/layouts/) che avvolgerà il loro contenuto Markdown in un documento di pagina completo `<html>...</html>`.
 
 ```md {3}
 ---
-# Example: src/pages/page.md
-layout: '../layouts/MySiteLayout.astro'
-title: 'La mia pagina Markdown'
+# Esempio: src/pages/page.md
+layout: ../layouts/MySiteLayout.astro
+title: La mia pagina Markdown
 ---
 # Titolo
 
@@ -92,54 +93,77 @@ Questa è la mia pagina, scritta in **Markdown.**
 
 ## Pagine HTML
 
-I file con estensione `.html` possono essere inseriti in `src/pages/` e utilizzati direttamente come pagine del tuo sito. Tieni presente che alcune funzionalità chiave di Astro non sono supportate nei [componenti HTML](/it/basics/astro-components/#componenti-html).
+I file con estensione `.html` possono essere inseriti nella directory `src/pages/` e utilizzati direttamente come pagine del tuo sito. Nota che alcune funzionalità chiave di Astro non sono supportate nei [Componenti HTML](/it/basics/astro-components/#componenti-html).
 
 ## Pagina di errore 404 personalizzata
 
-Per una pagina di errore 404 personalizzata, puoi creare un file `404.astro` o `404.md` in `/src/pages`.
+Per una pagina di errore 404 personalizzata, puoi creare un file `404.astro` o `404.md` in `src/pages`.
 
-Questo creerà una pagina `404.html`. La maggior parte dei [fornitori di servizi di hosting](/it/guides/deploy/) la troveranno e la utilizzeranno.
+Questo genererà una pagina `404.html`. La maggior parte dei [servizi di deploy](/it/guides/deploy/) la troveranno e la utilizzeranno.
+
+## Pagina di errore 500 personalizzata
+
+Per una pagina di errore 500 personalizzata da mostrare per le pagine che sono [renderizzate su richiesta](/it/guides/on-demand-rendering/), crea il file `src/pages/500.astro`. Questa pagina personalizzata non è disponibile per le pagine pre-renderizzate e non può essere pre-renderizzata.
+
+Se si verifica un errore durante il rendering di questa pagina, al visitatore verrà mostrata la pagina di errore 500 predefinita del tuo host.
+
+<p><Since v="4.10.3" /></p>
+
+Durante lo sviluppo, se hai un `500.astro`, l'errore generato a runtime viene registrato nel tuo terminale, invece di essere mostrato nell'overlay di errore.
+
+### `error`
+
+<p><Since v="4.11.0" /></p>
+
+`src/pages/500.astro` è una pagina speciale a cui viene automaticamente passata una prop `error` per qualsiasi errore generato durante il rendering. Ciò ti consente di utilizzare i dettagli di un errore (ad es. da una pagina, da un middleware, ecc.) per visualizzare informazioni al tuo visitatore.
+
+Il tipo di dati della prop `error` può essere qualsiasi cosa, il che potrebbe influire su come digiti o utilizzi il valore nel tuo codice:
+
+```astro title="src/pages/500.astro"
+---
+interface Props {
+  error: unknown;
+}
+
+const { error } = Astro.props;
+---
+<div>{error instanceof Error ? error.message : "Errore sconosciuto"}</div>
+```
+
+Per evitare di divulgare informazioni sensibili quando visualizzi contenuti dalla prop `error`, considera di valutare prima l'errore e restituire contenuti appropriati in base all'errore generato. Ad esempio, dovresti evitare di visualizzare lo stack dell'errore poiché contiene informazioni su come è strutturato il tuo codice sul server.
 
 ## Parziali della pagina
 
 <p><Since v="3.4.0" /></p>
 
 :::caution
-I parziali di pagina sono pensati per essere utilizzati insieme a una libreria front-end, come [htmx](https://htmx.org/) o [Unpoly](https://unpoly.com/). Puoi anche usarli se hai dimestichezza con la scrittura di JavaScript front-end di basso livello. Per questo motivo sono una funzionalità avanzata.
+I parziali di pagina sono pensati per essere utilizzati in combinazione con una libreria front-end, come [htmx](https://htmx.org/) o [Unpoly](https://unpoly.com/). Puoi anche usarli se hai dimestichezza con la scrittura di JavaScript front-end di basso livello. Per questo motivo sono una funzionalità avanzata.
 
-Inoltre, i parziali non dovrebbero essere utilizzati se il componente contiene stili o script specifici per la pagine, poiché questi elementi verranno rimossi dall'output HTML. Se hai bisogno di stili specifici per la pagina, è meglio utilizzare pagine regolari e non parziali insieme a una libreria frontend che sappia come unire i contenuti nell'intestazione.
+Inoltre, i parziali non dovrebbero essere utilizzati se il componente contiene stili o script con scope limitato, poiché questi elementi verranno rimossi dall'output HTML. Se hai bisogno di stili con scope limitato, è meglio utilizzare pagine regolari, non parziali, insieme a una libreria frontend che sappia come unire i contenuti nell'head.
 :::
 
-I parziali sono componenti di pagina situati all'interno di `src/pages/` che non sono destinati a essere visualizzati come pagine complete.
+I parziali sono componenti di pagina situati all'interno di `src/pages/` che non sono destinati a essere renderizzati come pagine complete.
 
-Come i componenti situati all'esterno di questa cartella, questi file non includono automaticamente la dichiarazione `<!DOCTYPE html>`, né alcun contenuto `<head>` come stili e script specifici per la pagina.
+Come i componenti situati al di fuori di questa cartella, questi file non includono automaticamente la dichiarazione `<!DOCTYPE html>`, né alcun contenuto `<head>` come stili e script con scope limitato.
 
-Tuttavia, poiché si trovano nella directory speciale `src/pages/`, l'HTML generato è disponibile in un URL corrispondente al percorso del file. Ciò consente a una libreria di rendering (ad esempio htmx, Stimulus, jQuery) di accedervi sul client e caricare sezioni di HTML dinamicamente su una pagina senza aggiornamento del browser o navigazione della pagina.
+Tuttavia, poiché si trovano nella directory speciale `src/pages/`, l'HTML generato è disponibile a un URL corrispondente al suo percorso file. Ciò consente a una libreria di rendering (ad es. [htmx](https://htmx.org/), [Stimulus](https://stimulus.hotwired.dev/), [jQuery](https://jquery.com/)) di accedervi sul client e caricare sezioni di HTML dinamicamente su una pagina senza un aggiornamento del browser o una navigazione della pagina.
 
-I parziali, se combinati con una libreria di rendering, forniscono un'alternativa alle [isole Astro](/it/concepts/islands/) e ai [tag`<script>`](/it/guides/client-side-scripts/) per la creazione di contenuto dinamico in Astro.
+I parziali, se combinati con una libreria di rendering, forniscono un'alternativa alle [isole Astro](/it/concepts/islands/) e ai [tag `<script>`](/it/guides/client-side-scripts/) per la creazione di contenuto dinamico in Astro.
 
-I file di pagina che possono esportare un valore (ad esempio `.astro`, `.mdx`) possono essere contrassegnati come parziali.
-
-Configura un file all'interno della directory `src/pages/` come parziale aggiungendo la seguente esportazione:
+I file di pagina che possono esportare un valore per [`partial`](/it/reference/routing-reference/#partial) (ad es. `.astro` e `.mdx`, ma non `.md`) possono essere contrassegnati come parziali.
 
 ```astro title="src/pages/partial.astro" ins={2}
 ---
 export const partial = true;
 ---
-
 <li>Sono un parziale!</li>
 ```
 
-`export const partial` deve essere identificabile staticamente. Può avere il valore di:
-
-- Il valore booleano __`true`__.
-- Una variabile di ambiente che utilizza import.meta.env come `import.meta.env.USE_PARTIALS`.
-
 ### Utilizzo con una libreria
 
- I partial vengono utilizzati per aggiornare dinamicamente una sezione di una pagina utilizzando una libreria come [htmx](https://htmx.org/).
+I parziali vengono utilizzati per aggiornare dinamicamente una sezione di una pagina utilizzando una libreria come [htmx](https://htmx.org/).
 
- L'esempio seguente mostra un attributo `hx-post` impostato sull'URL di un parziale. Il contenuto della pagina parziale verrà utilizzato per aggiornare l'elemento HTML di destinazione su questa pagina.
+L'esempio seguente mostra un attributo `hx-post` impostato sull'URL di un parziale. Il contenuto della pagina parziale verrà utilizzato per aggiornare l'elemento HTML di destinazione su questa pagina.
 
 ```astro title="src/pages/index.astro" 'hx-post="/partials/clicked/"'
 <html>
@@ -149,18 +173,20 @@ export const partial = true;
       integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
       crossorigin="anonymous"></script>
   </head>
+  <body>
+    <section>
+      <div id="parent-div">Destinazione qui</div>
+    
+      <button hx-post="/partials/clicked/"
+        hx-trigger="click"
+        hx-target="#parent-div"
+        hx-swap="innerHTML"
+      >
+        Cliccami!
+      </button>
+    </section>
+  </body>
 </html>
-<section>
-  <div id="parent-div">Destinazione qui</div>
-
-  <button hx-post="/partials/clicked/"
-    hx-trigger="click"
-    hx-target="#parent-div"
-    hx-swap="innerHTML"
-  >
-      Cliccami!
-  </button>
-</section>
 ```
 
 Il parziale `.astro` deve esistere nel percorso del file corrispondente e includere un'esportazione che definisce la pagina come parziale:

@@ -1,17 +1,25 @@
 ---
 title: Componenti
-description: Un'introduzione alla sintassi del componente .astro.
+description: Un'introduzione ai componenti Astro.
 i18nReady: true
 ---
+import ReadMore from '~/components/ReadMore.astro';
 
-I **componenti Astro** sono gli elementi costitutivi di base di qualsiasi progetto Astro. Sono componenti di modello solo HTML senza runtime lato client. Puoi individuare un componente Astro dalla sua estensione di file: `.astro`.
+I **componenti Astro** sono gli elementi costitutivi di base di qualsiasi progetto Astro. Sono componenti di modello solo HTML senza runtime lato client e usano l'estensione di file `.astro`.
 
-I componenti Astro sono estremamente flessibili. Spesso, un componente Astro conterrà alcune **UI riutilizzabili sulla pagina**, come un'intestazione o una scheda del profilo. Altre volte, un componente Astro può contenere un frammento di codice HTML più piccolo, come una raccolta di tag `<meta>` comuni che semplificano il lavoro con la SEO. I componenti Astro possono contenere anche un intero layout di pagina.
+:::note
+Se conosci HTML, sai già abbastanza per scrivere il tuo primo componente Astro.
 
-La cosa più importante da sapere sui componenti Astro è che **non vengono renderizzati sul client**. Eseguono il rendering in HTML in fase di compilazione o su richiesta utilizzando il [rendering lato server (SSR)](/it/guides/on-demand-rendering/). Puoi includere il codice JavaScript all'interno del frontmatter del tuo componente e tutto verrà rimosso dalla pagina finale inviata ai browser dei tuoi utenti. Il risultato è un sito più veloce, con zero impatto JavaScript aggiunto per impostazione predefinita.
+<ReadMore>Scopri di più nella [documentazione di riferimento della sintassi Astro](/it/reference/astro-syntax/).</ReadMore>
+:::
 
-Quando il tuo componente Astro necessita di interattività lato client, puoi aggiungere [tag HTML standard `<script>`](/it/guides/client-side-scripts/) o [componenti UI Framework](/it/guides/framework-components/#componenti-interattivi-idratanti).
+I componenti Astro sono estremamente flessibili. Un componente Astro può essere piccolo come un frammento di HTML, come una raccolta di tag `<meta>` comuni che semplificano il lavoro con la SEO. I componenti possono essere elementi UI riutilizzabili, come un'intestazione o una scheda profilo. I componenti Astro possono persino contenere un intero layout di pagina o, quando si trovano nella cartella speciale `src/pages/`, essere una pagina intera stessa.
 
+La cosa più importante da sapere sui componenti Astro è che **non vengono renderizzati sul client**. Vengono renderizzati in HTML o in fase di compilazione o su richiesta. Puoi includere codice JavaScript all'interno del frontmatter del tuo componente, e tutto questo verrà rimosso dalla pagina finale inviata ai browser dei tuoi utenti. Il risultato è un sito più veloce, con zero impatto JavaScript aggiunto per impostazione predefinita.
+
+Quando il tuo componente Astro necessita di interattività lato client, puoi aggiungere [tag HTML standard `<script>`](/it/guides/client-side-scripts/) o [componenti UI Framework](/it/guides/framework-components/#componenti-interattivi-idratanti) come "isole client" (client islands).
+
+Per i componenti che necessitano di renderizzare contenuto personalizzato o dinamico, puoi differire il loro rendering lato server aggiungendo una [direttiva server](/it/reference/directives-reference/#server-directives). Queste "isole server" (server islands) renderizzeranno il loro contenuto quando sarà disponibile, senza ritardare il caricamento dell'intera pagina.
 
 ## Struttura dei componenti
 
@@ -21,14 +29,14 @@ Un componente Astro è composto da due parti principali: lo **script del compone
 ---
 // Script del componente (JavaScript)
 ---
-<!-- Modello componente (espressioni HTML + JS) -->
+<!-- Modello del componente (HTML + Espressioni JS) -->
 ```
 
 ### Lo script del componente
 
-Astro utilizza un separatore del codice (`---`) per identificare lo script del componente nel componente Astro. Se hai mai scritto Markdown prima, potresti già avere familiarità con un concetto simile chiamato *frontmatter*. L'idea di Astro di uno script componente è stata direttamente ispirata da questo concetto.
+Astro utilizza un blocco di codice (`---`) per identificare lo script del componente nel tuo componente Astro. Se hai mai scritto Markdown prima, potresti già avere familiarità con un concetto simile chiamato *frontmatter*. L'idea di Astro di uno script componente è stata direttamente ispirata da questo concetto.
 
-Puoi utilizzare lo script del componente per scrivere qualsiasi codice JavaScript necessario per eseguire il rendering del tuo modello. Ciò può includere:
+Puoi utilizzare lo script del componente per scrivere qualsiasi codice JavaScript necessario per renderizzare il tuo modello. Ciò può includere:
 
 - importare altri componenti Astro
 - importare componenti da altri framework, come React
@@ -36,39 +44,42 @@ Puoi utilizzare lo script del componente per scrivere qualsiasi codice JavaScrip
 - recupero di contenuti da un'API o da un database
 - creare variabili a cui farai riferimento nel tuo modello
 
-
 ```astro title="src/components/MyComponent.astro"
 ---
 import SomeAstroComponent from '../components/SomeAstroComponent.astro';
 import SomeReactComponent from '../components/SomeReactComponent.jsx';
 import someData from '../data/pokemon.json';
 
-// Accede alle proprietà del componente passato, come `<X title="Ciao, mondo!" />`
-const {title} = Astro.props;
+// Accede alle proprietà del componente passato, come `<X title="Ciao, Mondo!" />`
+const { title } = Astro.props;
+
 // Recupera dati esterni, anche da un'API o un database privato
 const data = await fetch('SOME_SECRET_API_URL/users').then(r => r.json());
 ---
 <!-- Il tuo modello qui! -->
 ```
 
-Il separatore del codice è progettato per garantire che il codice JavaScript che scrivi al suo interno sia "recintato". Non sfuggirà alla tua applicazione frontend né cadrà nelle mani dell'utente. Puoi scrivere qui in sicurezza codice costoso o sensibile (come una chiamata al tuo database privato) senza preoccuparti che finisca mai nel browser dell'utente.
+Il blocco di codice è progettato per garantire che il JavaScript che scrivi al suo interno sia "recintato". Non sfuggirà alla tua applicazione frontend, né cadrà nelle mani dell'utente. Puoi scrivere qui in sicurezza codice costoso o sensibile (come una chiamata al tuo database privato) senza preoccuparti che finisca mai nel browser dell'utente.
 
-:::tip
-Puoi persino scrivere TypeScript nello script del tuo componente!
+:::note
+Lo script del componente Astro è TypeScript, il che ti permette di aggiungere sintassi aggiuntiva a JavaScript per strumenti dell'editor e controllo degli errori.
+
+<ReadMore>Leggi di più sul [supporto TypeScript integrato di Astro](/it/guides/typescript/).</ReadMore>
 :::
 
 ### Il modello del componente
 
-Il modello del componente si trova sotto il separatore del codice e determina l'output HTML del componente.
+Il modello del componente si trova sotto il blocco di codice e determina l'output HTML del componente.
 
-Se scrivi HTML semplice qui, il tuo componente rendererà quell'HTML in qualsiasi pagina Astro in cui viene importata e utilizzata.
+Se scrivi HTML semplice qui, il tuo componente renderizzerà quell'HTML in qualsiasi pagina Astro in cui viene importato e utilizzato.
 
-Tuttavia, [la sintassi del modello del componente Astro](/it/reference/astro-syntax/) supporta anche le **espressioni JavaScript**, tag [`<style>`](/it/guides/styling/#styling-in-astro) e [`<script>`](/it/guides/client-side-scripts/#using-script-in-astro) Astro, **componenti importati** e [**direttive speciali Astro** ](/it/reference/directives-reference/). I dati e i valori definiti nello script del componente possono essere utilizzati nel modello del componente per produrre HTML creato dinamicamente.
+Tuttavia, [la sintassi del modello del componente Astro](/it/reference/astro-syntax/) supporta anche **espressioni JavaScript**, tag Astro [`<style>`](/it/guides/styling/#styling-in-astro) e [`<script>`](/it/guides/client-side-scripts/#using-script-in-astro), **componenti importati**, e [**direttive speciali Astro**](/it/reference/directives-reference/). Dati e valori definiti nello script del componente possono essere usati nel modello del componente per produrre HTML creato dinamicamente.
 
 ```astro title="src/components/MyFavoritePokemon.astro"
 ---
 // Il tuo script del componente qui!
 import Banner from '../components/Banner.astro';
+import Avatar from '../components/Avatar.astro';
 import ReactPokemonComponent from '../components/ReactPokemonComponent.jsx';
 const myFavoritePokemon = [/* ... */];
 const { title } = Astro.props;
@@ -77,21 +88,26 @@ const { title } = Astro.props;
 {/*Anche la sintassi dei commenti JS è valida! */}
 
 <Banner />
-<h1>Hello, world!</h1>
+<h1>Ciao, mondo!</h1>
 
 <!-- Utilizza proprietà e altre variabili dallo script del componente: -->
 <p>{title}</p>
 
+<!-- Ritarda il rendering del componente e fornisce contenuto di caricamento di riserva: -->
+<Avatar server:defer>
+  <svg slot="fallback" class="generic-avatar" transition:name="avatar">...</svg>
+</Avatar>
+
 <!-- Includi componenti di altri framework UI con una direttiva `client:` per idratare: -->
 <ReactPokemonComponent client:visible />
 
-<!-- Usa espressioni JavaScript all'interno di tag HTML, come in JSX: -->
+<!-- Mescola HTML con espressioni JavaScript, simile a JSX: -->
 <ul>
   {myFavoritePokemon.map((data) => <li>{data.name}</li>)}
 </ul>
 
-<!-- Utilizza una direttiva template per creare nomi di classi da più stringhe o anche oggetti! -->
-<p class:list={["add", "dynamic", {classNames: true}]} />
+<!-- Utilizza una direttiva modello per creare nomi di classi da più stringhe o anche oggetti! -->
+<p class:list={["add", "dynamic", { classNames: true }]} />
 ```
 
 ## Progettazione basata su componenti
@@ -109,23 +125,22 @@ import Button from './Button.astro';
 </div>
 ```
 
-
 ## Proprietà dei componenti
 
-Un componente Astro può definire e accettare proprietà. Queste proprietà diventano quindi disponibili per il modello del componente per il rendering dell'HTML. Le proprietà sono disponibili nel file globale `Astro.props` nello script frontmatter.
+Un componente Astro può definire e accettare proprietà. Queste proprietà diventano quindi disponibili per il modello del componente per il rendering dell'HTML. Le proprietà sono disponibili nel globale `Astro.props` nel tuo script frontmatter.
 
-Ecco un esempio di un componente che riceve una prop `greeting` e una prop `name`. Notare che le proprietà da ricevere sono destrutturati dall'oggetto globale `Astro.props`.
+Ecco un esempio di un componente che riceve una prop `greeting` e una prop `name`. Notare che le proprietà da ricevere sono destrutturate dall'oggetto globale `Astro.props`.
 
 ```astro "Astro.props"
 ---
 // src/components/GreetingHeadline.astro
-// Utilizzo: <GreetingHeadline Greeting="Howdy" name="Partner" />
+// Utilizzo: <GreetingHeadline greeting="Howdy" name="Partner" />
 const { greeting, name } = Astro.props;
 ---
 <h2>{greeting}, {name}!</h2>
 ```
 
-A questo componente, quando importato e renderizzato in altri componenti, layout o pagine Astro, possono essere passati queste proprietà come attributi:
+Questo componente, quando importato e renderizzato in altri componenti, layout o pagine Astro, può passare queste proprietà come attributi:
 
 ```astro /(\w+)=\S+/
 ---
@@ -134,11 +149,11 @@ import GreetingHeadline from './GreetingHeadline.astro';
 const name = 'Astro';
 ---
 <h1>Biglietto di auguri</h1>
-<GreetingHeadline greeting="Ciao!" name={name} />
+<GreetingHeadline greeting="Ciao" name={name} />
 <p>Spero che tu abbia una giornata meravigliosa!</p>
 ```
 
-Puoi anche definire le tue proprietà con TypeScript con un'interfaccia di tipo `Props`. Astro selezionerà automaticamente l'interfaccia `Props` nel tuo frontmatter e fornirà avvisi/errori di tipo. A queste proprietà è anche possibile assegnare valori predefiniti quando vengono destrutturati da `Astro.props`.
+Puoi anche definire le tue proprietà con TypeScript con un'interfaccia di tipo `Props`. Astro rileverà automaticamente l'interfaccia `Props` nel tuo frontmatter e fornirà avvisi/errori di tipo. A queste proprietà possono anche essere assegnati valori predefiniti quando vengono destrutturate da `Astro.props`.
 
 ```astro ins={3-6}
 ---
@@ -165,12 +180,12 @@ const { greeting = "Ciao", name = "Astronauta" } = Astro.props;
 
 ## Slot
 
-L'elemento `<slot />` è un segnaposto per contenuto HTML esterno, che ti consente di inserire (o "slot") elementi secondari da altri file nel modello del componente.
+L'elemento `<slot />` è un segnaposto per contenuto HTML esterno, che ti consente di inserire (o "slot") elementi secondari da altri file nel modello del tuo componente.
 
-Per impostazione predefinita, tutti gli elementi figlio passati a un componente verranno visualizzati nel suo `<slot />`
+Per impostazione predefinita, tutti gli elementi secondari passati a un componente verranno renderizzati nel suo `<slot />`.
 
 :::note
-A differenza di _props_, che sono attributi passati a un componente Astro disponibili per l'uso nel componente con `Astro.props`, _slots_ renderizzano gli elementi HTML secondari laddove sono definiti.
+A differenza delle _props_, che sono attributi passati a un componente Astro disponibili per l'uso in tutto il componente con `Astro.props`, gli _slot_ renderizzano gli elementi HTML secondari dove sono scritti.
 :::
 
 ```astro "<slot />"
@@ -186,7 +201,7 @@ const { title } = Astro.props;
   <Header />
   <Logo />
   <h1>{title}</h1>
-  <slot />  <!-- i sotto-elementi andranno qui -->
+  <slot />  <!-- gli elementi secondari andranno qui -->
   <Footer />
 </div>
 ```
@@ -202,15 +217,13 @@ import Wrapper from '../components/Wrapper.astro';
 </Wrapper>
 ```
 
-Questo modello è la base di un [componente di layout Astro](/it/basics/layouts/): un'intera pagina di contenuto HTML può essere "racchiusa" con i tag `<SomeLayoutComponent></SomeLayoutComponent>` e inviata al componente per eseguire il rendering all'interno degli elementi comuni della pagina definiti lì.
+Questo schema è la base di un [componente di layout Astro](/it/basics/layouts/): un'intera pagina di contenuto HTML può essere “racchiusa” con tag `<SomeLayoutComponent></SomeLayoutComponent>` e inviata al componente per essere renderizzata all'interno di elementi di pagina comuni definiti lì.
 
+### Slot nominati
 
+Un componente Astro può anche avere slot nominati. Questo ti permette di passare solo elementi HTML con il nome dello slot corrispondente in una posizione dello slot.
 
-### Slot con nome
-
-Un componente Astro può anche avere slot denominati. Ciò ti consente di passare solo gli elementi HTML con il nome dello slot corrispondente nella posizione di uno slot.
-
-Gli slot vengono denominati utilizzando l'attributo `name`:
+Gli slot sono nominati usando l'attributo `name`:
 
 ```astro /<slot .*?/>/
 ---
@@ -223,17 +236,19 @@ const { title } = Astro.props;
 ---
 <div id="content-wrapper">
   <Header />
-  <slot name="after-header"/> <!-- i sotto-elementi con l'attributo `slot="after-header"` andranno qui -->
+  <!-- i sotto-elementi con l'attributo `slot="after-header"` andranno qui -->
+  <slot name="after-header" />
   <Logo />
   <h1>{title}</h1>
-  <slot />  <!-- i sotto-elementi senza `slot` o con l'attributo `slot="default"` andranno qui -->
+  <!-- i sotto-elementi senza `slot`, o con attributo `slot="default"` andranno qui -->
+  <slot />
   <Footer />
-  <slot name="after-footer" /> <!-- i sotto-elementi con l'attributo `slot="after-footer"` andranno qui -->
+  <!-- i sotto-elementi con l'attributo `slot="after-footer"` andranno qui -->
+  <slot name="after-footer" />
 </div>
 ```
 
-Per inserire contenuto HTML in un particolare slot, utilizza l'attributo `slot` su qualsiasi elemento figlio per specificare il nome dello slot. Tutti gli altri elementi secondari del componente verranno inseriti nel valore predefinito (senza nome) `<slot />`.
-
+Per iniettare contenuto HTML in un particolare slot, usa l'attributo `slot` su qualsiasi elemento secondario per specificare il nome dello slot. Tutti gli altri elementi secondari del componente verranno iniettati nello slot predefinito (senza nome) `<slot />`.
 
 ```astro /slot=".*?"/
 ---
@@ -249,14 +264,14 @@ import Wrapper from '../components/Wrapper.astro';
 ```
 
 :::tip
-Utilizza un attributo `slot="my-slot"` sull'elemento figlio che desideri passare a un segnaposto `<slot name="my-slot" />` corrispondente nel tuo componente.
+Usa un attributo `slot="my-slot"` sull'elemento secondario che vuoi passare a un segnaposto `<slot name="my-slot" />` corrispondente nel tuo componente.
 :::
 
-Per inserire elementi HTML dentro il placeholder `<slot/>` di un componente senza inserirlo dentro ad un `<div>`, una l'attributo `slot=""` nel [componente Astro `<Fragment/>`](/it/reference/astro-syntax/#frammenti):
+Per passare più elementi HTML nel segnaposto `<slot/>` di un componente senza un `<div>` contenitore, usa l'attributo `slot=""` sul [componente Astro `<Fragment/>`](/it/reference/astro-syntax/#frammenti):
 
 ```astro title="src/components/CustomTable.astro" "<slot name="header"/>" "<slot name="body"/>"
 ---
-// Create a custom table with named slot placeholders for head and body content
+// Crea una tabella personalizzata con segnaposto slot nominati per il contenuto dell'intestazione e del corpo
 ---
 <table class="bg-white">
   <thead class="sticky top-0 bg-white"><slot name="header" /></thead>
@@ -264,39 +279,38 @@ Per inserire elementi HTML dentro il placeholder `<slot/>` di un componente senz
 </table>
 ```
 
-Inserisci più righe e colonne di contenuto HTML utilizzando un attributo `slot=""` per specificare il contenuto `"header"` e `"body"`. Gli elementi HTML singoli possono anche essere stilizzati:
+Inietta più righe e colonne di contenuto HTML usando un attributo `slot=""` per specificare il contenuto `"header"` e `"body"`. Gli elementi HTML individuali possono anche essere stilizzati:
 
 ```astro title="src/components/StockTable.astro" {5-7, 9-13} '<Fragment slot="header">' '<Fragment slot="body">'
 ---
 import CustomTable from './CustomTable.astro';
 ---
 <CustomTable>
-  <Fragment slot="header"> <!-- pass table header -->
-    <tr><th>Product name</th><th>Stock units</th></tr>
+  <Fragment slot="header"> <!-- passa l'intestazione della tabella -->
+    <tr><th>Nome prodotto</th><th>Unità in stock</th></tr>
   </Fragment>
 
-  <Fragment slot="body"> <!-- pass table body -->
-    <tr><td>Flip-flops</td><td>64</td></tr>
-    <tr><td>Boots</td><td>32</td></tr>
-    <tr><td>Sneakers</td><td class="text-red-500">0</td></tr>
+  <Fragment slot="body"> <!-- passa il corpo della tabella -->
+    <tr><td>Infradito</td><td>64</td></tr>
+    <tr><td>Stivali</td><td>32</td></tr>
+    <tr><td>Scarpe da ginnastica</td><td class="text-red-500">0</td></tr>
   </Fragment>
 </CustomTable>
 ```
 
-Nota che gli slot con un nome devono essere un sotto-componente immediato del componente. Non è possibile passare gli slot con nome attraverso elementi nidificati.
+Nota che gli slot nominati devono essere un elemento secondario immediato del componente. Non puoi passare slot nominati attraverso elementi annidati.
 
 :::tip
-Gli slot con nome possono anche essere passati a [componenti di altri framework UI](/it/guides/framework-components/)!
+Gli slot nominati possono anche essere passati a [componenti di framework UI](/it/guides/framework-components/)!
 :::
-
 
 :::note
-Non è possibile generare dinamicamente un nome di uno slot Astro, ad esempio all'interno di una funzione map. Se questa funzionalità è necessaria all'interno dei componenti del framework UI, potrebbe essere meglio generare questi slot dinamici all'interno del framework stesso.
+Non è possibile generare dinamicamente un nome di slot Astro, come ad esempio all'interno di una funzione [map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map). Se questa funzionalità è necessaria all'interno dei componenti del framework UI, potrebbe essere meglio generare questi slot dinamici all'interno del framework stesso.
 :::
 
+### Contenuto di riserva per gli slot
 
-### Contenuti di riserva per gli slot
-Gli slot possono anche eseguire il rendering di **contenuti di riserva**. Quando non ci sono figli corrispondenti passati a uno slot, un elemento `<slot />` visualizzerà i propri figli segnaposto.
+Gli slot possono anche renderizzare **contenuto di riserva**. Quando non ci sono sotto-elementi corrispondenti passati a uno slot, un elemento `<slot />` renderizzerà i propri sotto-elementi segnaposto.
 
 ```astro {14}
 ---
@@ -312,11 +326,15 @@ const { title } = Astro.props;
   <Logo />
   <h1>{title}</h1>
   <slot>
-    <p>Questo è il mio contenuto di fallback, se non viene passato nessun sotto-elemento nello slot</p>
+    <p>Questo è il mio contenuto di riserva, se nessun sotto-elemento viene passato allo slot</p>
   </slot>
   <Footer />
 </div>
 ```
+
+Il contenuto di riserva verrà visualizzato solo quando non ci sono elementi corrispondenti con l'attributo `slot="name"` passati a uno slot nominato.
+
+Astro passerà uno slot vuoto quando un elemento slot esiste ma non ha contenuto da passare. Il contenuto di riserva non può essere usato come predefinito quando viene passato uno slot vuoto. Il contenuto di riserva viene visualizzato solo quando non si trova alcun elemento slot.
 
 ### Trasferimento di slot
 
@@ -351,10 +369,10 @@ import BaseLayout from './BaseLayout.astro';
 ```
 
 :::note
-Gli slot con nome possono essere trasferiti a un altro componente utilizzando sia gli attributi `name` che `slot` su un tag `<slot />`
+Gli slot nominati possono essere trasferiti a un altro componente utilizzando sia gli attributi `name` che `slot` su un tag `<slot />`.
 :::
 
-Ora, gli slot predefiniti e "head" passati a "HomeLayout" verranno trasferiti al genitore "BaseLayout"
+Ora, gli slot predefiniti e `head` passati a `HomeLayout` verranno trasferiti al genitore `BaseLayout`.
 
 ```astro
 // src/pages/index.astro
@@ -367,22 +385,20 @@ import HomeLayout from '../layouts/HomeLayout.astro';
 </HomeLayout>
 ```
 
-
 ## Componenti HTML
 
-Astro supporta l'importazione e l'utilizzo di file `.html` come componenti o l'inserimento di questi file nella sottodirectory `src/pages/` come pagine. Potresti voler utilizzare componenti HTML se stai riutilizzando il codice di un sito esistente creato senza un framework o se vuoi assicurarti che il tuo componente non abbia funzionalità dinamiche.
+Astro supporta l'importazione e l'utilizzo di file `.html` come componenti o il posizionamento di questi file all'interno della sottodirectory `src/pages/` come pagine. Potresti voler utilizzare componenti HTML se stai riutilizzando codice da un sito esistente costruito senza un framework, o se vuoi assicurarti che il tuo componente non abbia funzionalità dinamiche.
 
-I componenti HTML devono contenere solo HTML valido e pertanto non dispongono delle funzionalità chiave dei componenti Astro:
-- Non supportano frontmatter, importazioni lato server o espressioni dinamiche.
-- Tutti i tag `<script>` vengono lasciati non raggruppati, trattati come se avessero `is:inline`.
-- Possono solo [fare riferimento alle risorse che si trovano nella cartella `public/`](/it/basics/project-structure/#public).
+I componenti HTML devono contenere solo HTML valido, e quindi mancano delle funzionalità chiave dei componenti Astro:
+
+- Non supportano frontmatter, importazioni lato server, o espressioni dinamiche.
+- Qualsiasi tag `<script>` viene lasciato non raggruppato, trattato come se avesse `is:inline`.
+- Possono solo [fare riferimento ad asset che si trovano nella cartella `public/`](/it/basics/project-structure/#public).
 
 :::note
-Un [elemento `<slot />`](/it/basics/astro-components/#slot) all'interno di un componente HTML funzionerà come in un componente Astro. Per utilizzare invece l'elemento [HTML Web Component Slot](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot), aggiungi `is:inline` al tuo `<slot >` elemento.
+Un [elemento `<slot />`](/it/basics/astro-components/#slot) all'interno di un componente HTML funzionerà come in un componente Astro. Per utilizzare invece l'elemento [HTML Web Component Slot](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot), aggiungi `is:inline` al tuo elemento `<slot>`.
 :::
 
 ## Prossimi passi
 
-import ReadMore from '~/components/ReadMore.astro';
-
-<ReadMore>Scopri come utilizzare i [componenti di framework UI](/it/guides/framework-components/) nel tuo progetto Astro.</ReadMore>
+<ReadMore>Leggi di più sull'utilizzo dei [componenti di framework UI](/it/guides/framework-components/) nel tuo progetto Astro.</ReadMore>
