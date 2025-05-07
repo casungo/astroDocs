@@ -1,0 +1,204 @@
+---
+title: Aggiorna Astro
+description: Impara come aggiornare Astro
+i18nReady: true
+banner:
+  content: |
+    Astro v5 è arrivato! <a href="/it/guides/upgrade-to/v5/">Scopri come aggiornare il tuo sito</a>
+---
+import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
+import Version from '~/components/Version.astro';
+
+Questa guida spiega come aggiornare la tua versione di Astro e le dipendenze correlate, come scoprire cosa è cambiato da una versione all'altra e come comprendere il sistema di versionamento di Astro e i corrispondenti aggiornamenti della documentazione.
+
+## Cosa è cambiato?
+
+L'ultima versione di Astro è la <Version pkgName="astro" />.
+
+Puoi trovare un elenco esaustivo di tutte le modifiche nel [changelog di Astro](https://github.com/withastro/astro/blob/main/packages/astro/CHANGELOG.md) e istruzioni importanti per l'aggiornamento a ogni nuova [versione principale](#modifiche-principali) nelle nostre [guide all'aggiornamento](#guide-allaggiornamento).
+
+## Aggiorna all'ultima versione
+
+Aggiorna la versione di Astro del tuo progetto e tutte le integrazioni ufficiali alle ultime versioni con un unico comando usando il tuo gestore di pacchetti:
+
+<PackageManagerTabs>
+  <Fragment slot="npm">
+  ```shell
+  # Aggiorna Astro e le integrazioni ufficiali insieme
+  npx @astrojs/upgrade
+  ```
+  </Fragment>
+  <Fragment slot="pnpm">
+  ```shell
+  # Aggiorna Astro e le integrazioni ufficiali insieme
+  pnpm dlx @astrojs/upgrade
+  ```
+  </Fragment>
+  <Fragment slot="yarn">
+  ```shell
+  # Aggiorna Astro e le integrazioni ufficiali insieme
+  yarn dlx @astrojs/upgrade
+  ```
+  </Fragment>
+</PackageManagerTabs>
+
+### Aggiornamento Manuale
+
+Per aggiornare manualmente Astro e le integrazioni alle loro versioni correnti, usa il comando appropriato per il tuo gestore di pacchetti.
+
+<PackageManagerTabs>
+  <Fragment slot="npm">
+  ```shell
+  # Esempio: aggiorna Astro con le integrazioni React e Partytown
+  npm install astro@latest @astrojs/react@latest @astrojs/partytown@latest
+  ```
+  </Fragment>
+  <Fragment slot="pnpm">
+  ```shell
+  # Esempio: aggiorna Astro con le integrazioni React e Partytown
+  pnpm add astro@latest @astrojs/react@latest @astrojs/partytown@latest
+  ```
+  </Fragment>
+  <Fragment slot="yarn">
+  ```shell
+  # Esempio: aggiorna Astro con le integrazioni React e Partytown
+  yarn add astro@latest @astrojs/react@latest @astrojs/partytown@latest
+  ```
+  </Fragment>
+</PackageManagerTabs>
+
+### Installa un numero di versione specifico
+
+Per installare una specifica [versione di Astro](https://www.npmjs.com/package/astro?activeTab=versions) o delle integrazioni, usa il comando appropriato per il tuo gestore di pacchetti.
+
+<PackageManagerTabs>
+  <Fragment slot="npm">
+  ```shell
+  npm install astro@4.5.3 @astrojs/react@3.0.10
+  ```
+  </Fragment>
+  <Fragment slot="pnpm">
+  ```shell
+  pnpm add astro@4.5.3 @astrojs/react@3.0.10
+  ```
+  </Fragment>
+  <Fragment slot="yarn">
+  ```shell
+  yarn add astro@4.5.3 @astrojs/react@3.0.10
+  ```
+  </Fragment>
+</PackageManagerTabs>
+
+## Aggiornamenti della documentazione
+
+Questa documentazione viene aggiornata per ogni [rilascio minore](#modifiche-minori) e [rilascio di versione principale](#modifiche-principali). Quando vengono aggiunte nuove funzionalità o l'utilizzo esistente cambia, la documentazione si aggiornerà per riflettere il **comportamento attuale di Astro**. Se il tuo progetto non è aggiornato, potresti notare che alcuni comportamenti non corrispondono alla documentazione aggiornata.
+
+Le nuove funzionalità vengono aggiunte alla documentazione con il numero di versione specifico in cui sono state introdotte. Ciò significa che se non hai aggiornato all'ultima versione di Astro, alcune funzionalità documentate potrebbero non essere disponibili. Controlla sempre il numero di versione `Aggiunto in:` e assicurati che il tuo progetto sia aggiornato prima di tentare di utilizzare nuove funzionalità!
+
+Se non hai effettuato l'aggiornamento all'ultima versione principale di Astro, potresti riscontrare differenze significative tra la documentazione di Astro e il comportamento del tuo progetto. Consigliamo vivamente di aggiornare alla versione principale corrente di Astro non appena possibile. Sia il codice che la documentazione per le versioni precedenti non sono supportati.
+
+### Guide all'Aggiornamento
+
+Dopo ogni [rilascio di versione principale](#modifiche-principali), troverai una **guida all'aggiornamento** con informazioni su modifiche importanti e istruzioni per aggiornare il codice del tuo progetto.
+
+Le pagine principali della documentazione di Astro sono sempre **accurate per l'ultima versione rilasciata di Astro**. Non descrivono o confrontano come funzionavano le cose nelle versioni precedenti, né evidenziano comportamenti aggiornati o modificati.
+
+Consulta le guide all'aggiornamento qui sotto per una spiegazione delle modifiche, confrontando la nuova versione con la vecchia. Le guide all'aggiornamento includono tutto ciò che potrebbe richiedere una modifica al tuo codice: modifiche che rompono la compatibilità (breaking changes), deprecazioni, rimozioni e sostituzioni di funzionalità, nonché indicazioni d'uso aggiornate. Ogni modifica ad Astro include una sezione "Cosa dovrei fare?" per aiutarti ad aggiornare con successo il codice del tuo progetto.
+
+- [Aggiornamento a v5](/it/guides/upgrade-to/v5/)
+- [Aggiornamento a v4](/it/guides/upgrade-to/v4/)
+- [Aggiornamento a v3](/it/guides/upgrade-to/v3/)
+- [Aggiornamento a v2](/it/guides/upgrade-to/v2/)
+- [Aggiornamento a v1](/it/guides/upgrade-to/v1/)
+
+### Documentazione più vecchia (non mantenuta)
+
+La documentazione per le versioni più vecchie di Astro non è mantenuta, ma è disponibile come snapshot statico. Usa queste versioni della documentazione se non sei in grado di aggiornare il tuo progetto, ma desideri comunque consultare guide e riferimenti:
+
+- [snapshot v4.16.17 non mantenuto](https://v4.docs.astro.build/it/getting-started/)
+- [snapshot v3.6.3 non mantenuto](https://docs-git-v3-docs-unmaintained-astrodotbuild.vercel.app/it/getting-started/)
+- [snapshot v2.10.15 non mantenuto](https://deploy-preview-4405--astro-docs-2.netlify.app/it/getting-started/)
+
+## Versionamento semantico
+
+Astro cerca di aderire il più possibile al [versionamento semantico (semantic versioning)](https://semver.org/), che è un insieme di regole che gli sviluppatori usano per determinare come assegnare un numero di versione a un rilascio. Il versionamento semantico segue un pattern prevedibile per informare gli utenti del tipo di modifiche che possono aspettarsi da una versione all'altra.
+
+Il versionamento semantico impone un pattern `X.Y.Z` per i numeri di versione del software. Questi valori rappresentano aggiornamenti **principali (X)**, **minori (Y)** e **patch (Z)**.
+
+### Modifiche patch
+
+Le modifiche patch sono le meno dirompenti. Non cambiano il modo in cui usi Astro e non è richiesta alcuna modifica al tuo codice quando aggiorni.
+
+Quando Astro rilascia una versione "patch", l'ultimo numero aumenta (es. `astro@4.3.14` -> `astro@4.3.15`).
+
+Le patch possono essere rilasciate per motivi come:
+
+- Modifiche interne che non cambiano la funzionalità di Astro:
+  - refactoring
+  - miglioramenti delle prestazioni
+  - aumento o modifica della copertura dei test
+  - allineamento con la documentazione dichiarata e il comportamento atteso
+- Miglioramenti ai log e ai messaggi di errore.
+- Rilasci successivi a un rilascio fallito.
+
+Le modifiche patch includono anche la **maggior parte delle correzioni di bug**, anche nei casi in cui gli utenti stavano sfruttando un comportamento esistente non intenzionale o indesiderato.
+
+### Modifiche minori
+
+I rilasci minori introducono principalmente nuove funzionalità e miglioramenti che potresti voler provare, ma non richiedono modifiche al tuo codice. Alcune funzionalità esistenti potrebbero anche essere **deprecate** (marcate per l'eliminazione in una versione futura pur continuando a funzionare) in un rilascio minore, dandoti l'opportunità di prepararti alla loro eventuale rimozione.
+
+I rilasci minori includono modifiche come:
+
+- **Deprecazioni** di funzionalità/opzioni esistenti con un avviso che verranno rimosse in un imminente rilascio principale.
+- Introduzione di nuove funzionalità.
+- Introduzione di nuove opzioni negli hook di integrazione.
+- Introduzione di nuove funzionalità in `astro/app`, utilizzate in particolare per creare nuovi adattatori.
+
+Un rilascio minore può anche includere contemporaneamente modifiche patch più piccole.
+
+### Modifiche principali
+
+I rilasci principali includeranno modifiche che rompono la compatibilità (breaking changes) per almeno una parte del codice esistente. Queste modifiche che rompono la compatibilità sono sempre documentate in una guida ["Aggiornamento a vX"](#guide-allaggiornamento) in Astro.
+
+I rilasci principali consentono ad Astro di apportare modifiche significative non solo alla logica interna, ma anche al comportamento e all'utilizzo previsti. La documentazione verrà aggiornata per riflettere solo l'ultima versione, e **snapshot statici e non mantenuti della documentazione più vecchia** sono disponibili come archivio storico per progetti più vecchi non ancora aggiornati.
+
+I rilasci principali includono modifiche come:
+
+- Rimozione di funzionalità precedentemente deprecate.
+- Modifiche a funzionalità esistenti.
+- Modifiche a opzioni esistenti negli hook di integrazione.
+- Modifiche a opzioni e funzionalità esistenti in `astro/app`, utilizzate in particolare per creare nuovi adattatori.
+
+Un rilascio principale può anche includere alcune modifiche e miglioramenti non dirompenti che normalmente verrebbero rilasciati separatamente in un rilascio minore o patch.
+
+### Eccezioni
+
+- **Funzionalità sperimentali**. Rilasciare versioni di Astro senza aderire al versionamento semantico consente agli sviluppatori di Astro la massima flessibilità per esplorare, e persino cambiare radicalmente rotta, durante lo sviluppo di funzionalità sperimentali. Pertanto, il comportamento di queste funzionalità può rompersi in modifiche minori e patch.
+
+  Queste funzionalità sono solitamente accompagnate da una [Richiesta di Considerazione (RFC) pubblica in corso, fase 3](https://github.com/withastro/roadmap#stage-3-rfc--development). Ci si aspetta che gli utenti beta seguano gli aggiornamenti e forniscano un feedback tempestivo nella discussione per aiutare a guidare lo sviluppo di queste funzionalità.
+
+  Una volta che queste funzionalità escono dal loro periodo sperimentale, seguiranno il normale contratto di versionamento semantico.
+
+- **Miglioramenti alla documentazione** (es. riferimenti e messaggi di errore). Sono costruiti dal sorgente per il repository `docs`. Ciò consente ad Astro di aggiornare rapidamente correzioni e miglioramenti della documentazione nei casi in cui il contenuto sorgente della documentazione è memorizzato nel repository principale `astro`.
+
+### Supporto Node.js e politiche di aggiornamento
+
+#### Supporto
+
+- Astro supporta l'[**ultima versione _Maintenance_ LTS** di Node.js](https://nodejs.org/en/about/previous-releases#release-schedule).
+- Astro supporta l'[**attuale versione _Active_ LTS** di Node.js](https://nodejs.org/en/about/previous-releases#release-schedule).
+- Astro può supportare versioni dispari di Node.js.
+
+#### Aggiornamento
+
+Le seguenti regole definiscono quando Astro può deprecare, abbandonare o aggiungere il supporto per le versioni di Node.js:
+
+- Le versioni dispari di Node.js possono essere deprecate e/o abbandonate quando viene pubblicata la successiva versione pari di Node.js. Questa modifica può avvenire in un rilascio **minore** di Astro, dopo un ragionevole periodo di supporto esteso deciso dal team Core di Astro.
+- L'aggiornamento della versione minima **_Maintenance_ LTS** (all'interno dello stesso intervallo maggiore, es. da `v18.14.*` a `v18.20.*`) di Node.js può avvenire in un rilascio **minore** di Astro.
+  - Eccezione di sicurezza: se viene divulgata e corretta una falla di sicurezza in Node.js che **interessa Astro**, il team Core può aumentare la versione minima della **_Maintenance_ LTS** in un rilascio **patch**.
+- L'aggiornamento di versioni minori o maggiori di Node.js (**non** Maintenance LTS) avviene solo nelle versioni maggiori di Astro.
+  - Eccezione di sicurezza: se viene divulgata e corretta una falla di sicurezza in Node.js che **interessa Astro**, il team Core può aumentare la versione minima in un rilascio **minore**.
+
+### Manutenzione estesa
+
+Il team Core fornirà manutenzione estesa **solo per correzioni di sicurezza** per una precedente versione principale. Ciò significa che se la principale corrente è `v4.*`, il team Core effettuerà il backport delle correzioni di sicurezza ed emetterà un nuovo rilascio `v3.*`.
